@@ -5,7 +5,7 @@ import random
 
 path = "./orl_faces/"
 
-ratio = 3.5
+ratio = 1#3.5
 w, h = int(round(92 / ratio)),int(round(112 / ratio))
 def GetData(filename):
     #im = Image.open("./orl_faces/s1/1.pgm")
@@ -40,8 +40,15 @@ def Train():
     #avg 
     avg = np.mean(X)
     W = X - avg
-    Q = W.T * W
-    pw, pv = LA.eig(Q)
+    e,r = W.shape
+    if r <= e:
+        Q = W.T * W # r * r
+        pw, pv = LA.eig(Q)
+        #pv: (r*r)
+    else:
+        Q = W * W.T # e * e
+        pw, ov = LA.eig(Q)
+        pv = W.T * ov # (r,e) * (e * r)
     np.save("w.npy", pw)
     np.save("v.npy", pv)
     np.save("s.npy", S)
