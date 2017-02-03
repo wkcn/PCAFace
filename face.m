@@ -11,7 +11,7 @@ for i = 1:n
 		pic = imread(name);
 		d = reshape(pic, 1 , w * h);
 		data(k, :) = d;
-		k += 1;
+		k = k + 1;
 	end
 end
 
@@ -20,12 +20,12 @@ k = 1;
 for i = 1:n
 	for j = 1:7
 		X(k, :) = data((i-1) * 10 + j,:);
-		k += 1;
+		k = k + 1;
 	end
 end
 
 avg = mean(X); % row vector;
-W = X - avg;
+W = X - repmat(avg, n * 7, 1);
 [e, r] = size(W);
 if r <= e
 	Q = W' * W;
@@ -53,11 +53,11 @@ for i = 1:n
 		f = repmat(y', n * 7, 1); 
 		d = Y - f;
 		g = d .* d;
-		su = sum(g, axis = 2);
+		su = sum(g, 2);
 		[dis, vr] = min(su);
 		r = ceil(vr / 7);
 		if i == r
-			right += 1;
+			right = right + 1;
 		end	
 	end
 end
