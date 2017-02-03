@@ -29,15 +29,16 @@ W = X - avg;
 [e, r] = size(W);
 if r <= e
 	Q = W' * W;
-	[pv, D] = eig(Q);
+	[cv, D] = eig(Q);
 else
 	Q = W * W';
 	[V, D] = eig(Q);
-	pv = W' * V;
+	cv = W' * V;
 end
 
+% sort feature vector by feature values
 [D_sort, D_index] = sort(diag(D), 'descend');
-pv = pv(:, D_index);
+pv = cv(:, D_index);
 
 %recognize
 %pv = eye(size(pv));
